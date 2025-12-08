@@ -98,8 +98,8 @@ export default function UserButton({
           </>
         )}
 
-        <DropdownMenuItem>
-          <a href={resolvedLogoutUrl} className="flex gap-2 items-center">
+        <DropdownMenuItem asChild>
+          <a href={resolvedLogoutUrl} className="flex gap-2 items-center w-full">
             <LogOut />
             Log out
           </a>

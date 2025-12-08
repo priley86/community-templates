@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
-from starlette.middleware.sessions import SessionMiddleware
 
 from app.core.auth import auth_client
 from app.core.config import settings
@@ -27,3 +26,13 @@ app.add_middleware(SessionMiddleware, secret_key=settings.AUTH0_SECRET)
 
 # Save auth state
 app.state.auth_client = auth_client
+
+
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for Cloud Run and monitoring."""
+    return {
+        "status": "healthy",
+        "service": settings.APP_NAME,
+        "langgraph_url": settings.langgraph_url,
+    }

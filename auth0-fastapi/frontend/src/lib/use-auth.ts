@@ -32,7 +32,5 @@ export function getSignupUrl() {
 }
 
 export function getLogoutUrl() {
-  return `/api/auth/logout?returnTo=${
-    window.location
-  }`;
+  return `/api/auth/logout?returnTo=${window.location.origin}`;
 }

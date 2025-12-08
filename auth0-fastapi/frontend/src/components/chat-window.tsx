@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { TokenVaultInterruptHandler } from "@/components/TokenVaultInterruptHandler.tsx";
 import { cn } from "@/lib/utils";
 import { getConnectUrl } from "@/lib/use-auth";
-import { useLocation } from "react-router-dom";
 
 function ChatMessages(props: {
   messages: Message[];

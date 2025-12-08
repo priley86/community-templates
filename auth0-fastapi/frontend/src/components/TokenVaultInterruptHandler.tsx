@@ -26,7 +26,7 @@ export function TokenVaultInterruptHandler({
   return (
     <div key={interrupt.ns?.join("")} className="whitespace-pre-wrap">
       <TokenVaultConsent
-        mode="popup"
+        mode="redirect"
         interrupt={interrupt.value}
         onFinish={onFinish}
         auth={auth}

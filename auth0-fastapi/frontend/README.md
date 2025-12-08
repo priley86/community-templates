@@ -5,12 +5,13 @@ Rename `.env.example` file to `.env` in the `frontend` directory.
 Finally, you can start the frontend server:
 
 ```bash
+# Frontend
 cd frontend
 npm install
 npm run dev
 ```
 
-This will start a React vite server on port 5173.
+This will start a React vite server on port 9000.
 
 ## React + TypeScript + Vite
 

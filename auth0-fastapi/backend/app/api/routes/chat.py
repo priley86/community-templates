@@ -17,9 +17,9 @@ async def api_route(
     request: Request, full_path: str, auth_session=Depends(auth_client.require_session)
 ):
     try:
-        # Build target URL
+        # Build target URL (uses langgraph_url which automatically picks external or local)
         query_string = str(request.url.query)
-        target_url = f"{settings.LANGGRAPH_API_URL}/{full_path}"
+        target_url = f"{settings.langgraph_url}/{full_path}"
         if query_string:
             target_url += f"?{query_string}"
 
