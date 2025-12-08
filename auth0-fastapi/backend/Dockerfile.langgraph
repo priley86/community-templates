@@ -1,0 +1,42 @@
+# Dockerfile for LangGraph Server
+# Deploy to Google Cloud Run for external access
+
+FROM python:3.13-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install uv for dependency management
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+# Copy dependency files
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies (production only, no dev dependencies)
+RUN uv sync --frozen --no-dev
+
+# Copy application code
+COPY app ./app
+COPY langgraph.json ./
+
+# Create non-root user for security
+RUN useradd -m -u 1000 langgraph && \
+    chown -R langgraph:langgraph /app
+
+USER langgraph
+
+# Expose the LangGraph port
+EXPOSE 54367
+
+# Health check endpoint
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:54367/health').read()" || exit 1
+
+# Run LangGraph server
+# Run Python directly with our custom server script
+CMD ["uv", "run", "python", "app/langgraph_server.py"]

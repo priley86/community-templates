@@ -1,0 +1,12 @@
+{
+  "name": "Auth0 + Firebase + FastAPI + LangChain Starter",
+  "description": "An AI personal assistant template using Auth0, Firebase, FastAPI, LangGraph, and Vite/React. Build secure AI applications with authentication, LangGraph agents, and a modern frontend.",
+  "categories": [
+    "Web app",
+    "Backend",
+    "AI"
+  ],
+  "icon": "",
+  "website": "https://github.com/firebase-studio/community-templates",
+  "publisher": "Patrick Riley"
+}
