@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auth0 + FastMCP Server</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+    .header h1 svg {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+    .header p {
+      opacity: 0.9;
+      font-size: 1.1rem;
+    }
+    .content {
+      padding: 2rem;
+    }
+    .alert {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      border-radius: 4px;
+    }
+    .alert-title {
+      font-weight: 600;
+      color: #92400e;
+      margin-bottom: 0.5rem;
+    }
+    .alert-text {
+      color: #78350f;
+      line-height: 1.6;
+    }
+    .section {
+      margin-bottom: 2rem;
+    }
+    .section h2 {
+      color: #667eea;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    .code-block {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      transition: background 0.2s;
+    }
+    .copy-btn:hover {
+      background: #5568d3;
+    }
+    .copy-btn.copied {
+      background: #10b981;
+    }
+    .info {
+      background: #dbeafe;
+      border-left: 4px solid #3b82f6;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+    .info p {
+      color: #1e40af;
+      margin: 0;
+      line-height: 1.6;
+    }
+    .deployment {
+      background: #f0fdf4;
+      border: 2px solid #10b981;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-top: 2rem;
+    }
+    .deployment h3 {
+      color: #047857;
+      margin-bottom: 1rem;
+    }
+    .deployment p {
+      color: #065f46;
+      margin-bottom: 1rem;
+    }
+    .deployment code {
+      background: #d1fae5;
+      padding: 0.25rem 0.5rem;
+      border-radius: 3px;
+      font-family: monospace;
+      color: #065f46;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>
+        <svg fill="currentColor" viewBox="0 0 53 64" class="sc-hrcbll iYmZAV base-QuantumLogo-svg"><path d="M3.372 27.782c10.475-1.728 18.686-10.4 20.407-20.892l.577-5.043c.143-.802-.4-1.918-1.412-1.838C15.03.628 7.56 3.243 3.406 4.943A5.488 5.488 0 000 10.027v16.451c0 .973.874 1.717 1.834 1.563l1.538-.252v-.006zM28.831 6.89c1.726 10.492 9.938 19.164 20.407 20.893l1.537.252c.96.16 1.835-.584 1.835-1.563v-16.45a5.488 5.488 0 00-3.406-5.084C45.044 3.232 37.58.622 29.666.004c-1.018-.08-1.538 1.048-1.418 1.837l.577 5.043.006.006zM49.23 32.39C34.915 35.219 28.27 44.75 28.27 62.79c0 .905.897 1.535 1.651 1.031 6.584-4.447 21.07-16.056 22.562-30.577.057-1.826-2.223-.968-3.252-.853zM3.377 32.39c14.315 2.828 20.961 12.359 20.961 30.4 0 .905-.897 1.535-1.651 1.031C16.103 59.374 1.617 47.765.125 33.244c-.057-1.826 2.223-.968 3.252-.853z"></path></svg>
+        Auth0 + FastMCP Server
+      </h1>
+      <p>OAuth 2.0 Protected MCP Server running in Firebase Studio</p>
+    </div>
+    
+    <div class="content">
+      <div class="alert">
+        <div class="alert-title">⚠️ Firebase Studio Limitation</div>
+        <div class="alert-text">
+          Firebase Studio preview URLs cannot currently be accessed by external tools like MCP Inspector. 
+          Use the cURL commands below in your <strong>Firebase Studio terminal</strong> to test the MCP server locally.
+        </div>
+      </div>
+
+      <div class="info" style="margin-bottom: 2rem;">
+        <p><strong>📝 Need an Auth0 Access Token?</strong></p>
+        <p>See the <strong>README.md</strong> for instructions on creating a test application and acquiring an access token to test the MCP server. You'll need to replace <code>YOUR_ACCESS_TOKEN</code> in the commands below with your actual token.</p>
+      </div>
+
+      <div class="section">
+        <h2>🧪 Test Commands</h2>
+        <p style="margin-bottom: 1rem; color: #64748b;">Copy and paste these commands into your Firebase Studio terminal:</p>
+        
+        <h3 style="color: #64748b; font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">Check Server Status / Protected Resource Metadata Endpoint</h3>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this, 'cmd1')">Copy</button>
+          <pre id="cmd1">curl -v http://localhost:3001/.well-known/oauth-protected-resource</pre>
+        </div>
+
+        <h3 style="color: #64748b; font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">List Available Tools</h3>
+        <div class="info">
+          <p><strong>Note:</strong> Replace <code>YOUR_ACCESS_TOKEN</code> with a valid Auth0 access token.</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this, 'cmd2')">Copy</button>
+          <pre id="cmd2">curl -X POST http://localhost:3001/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -d '{"jsonrpc": "2.0", "id": 1, "method": "tools/list"}'</pre>
+        </div>
+
+        <h3 style="color: #64748b; font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">Call get_datetime Tool</h3>
+        <div class="info">
+          <p><strong>Note:</strong> Requires Auth0 access token, but <strong>no specific scopes</strong> are required.</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this, 'cmd3')">Copy</button>
+          <pre id="cmd3">curl -X POST http://localhost:3001/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -d '{"jsonrpc": "2.0", "id": 2, "method": "tools/call", "params": {"name": "get_datetime", "arguments": {}}}'</pre>
+        </div>
+
+        <h3 style="color: #64748b; font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">Call whoami Tool</h3>
+        <div class="info">
+          <p><strong>Note:</strong> Requires Auth0 access token with <code>tool:whoami</code> scope.</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this, 'cmd4')">Copy</button>
+          <pre id="cmd4">curl -X POST http://localhost:3001/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -d '{"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "whoami", "arguments": {}}}'</pre>
+        </div>
+
+        <h3 style="color: #64748b; font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">Call greet Tool</h3>
+        <div class="info">
+          <p><strong>Note:</strong> Requires Auth0 access token with <code>tool:greet</code> scope.</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this, 'cmd5')">Copy</button>
+          <pre id="cmd5">curl -X POST http://localhost:3001/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -d '{"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {"name": "greet", "arguments": {"name": "World"}}}'</pre>
+        </div>
+      </div>
+
+      <div class="deployment">
+        <h3>🚀 For Interactive Testing with MCP Inspector</h3>
+        <p>Deploy your MCP server to Google Cloud Run to test with MCP Inspector's web UI:</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this, 'deploy')">Copy</button>
+          <pre id="deploy">cp .env.example .env.production
+# Edit .env.production with your Auth0 credentials
+./scripts/deploy-mcp-server.sh</pre>
+        </div>
+        <p style="margin-top: 1rem;">See <code>DEPLOYMENT.md</code> for detailed deployment instructions.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function copyCode(button, elementId) {
+      const code = document.getElementById(elementId).textContent;
+      const originalText = button.textContent;
+      
+      // Try multiple methods to copy text
+      // Method 1: Modern Clipboard API
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(() => {
+          button.textContent = 'Copied!';
+          button.classList.add('copied');
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.classList.remove('copied');
+          }, 2000);
+        }).catch(err => {
+          // Fallback if clipboard API fails
+          fallbackCopy(code, button, originalText);
+        });
+      } else {
+        // Fallback for older browsers or restricted contexts
+        fallbackCopy(code, button, originalText);
+      }
+    }
+    
+    function fallbackCopy(text, button, originalText) {
+      // Create a temporary textarea
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          button.textContent = 'Copied!';
+          button.classList.add('copied');
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.classList.remove('copied');
+          }, 2000);
+        } else {
+          button.textContent = 'Failed';
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 2000);
+        }
+      } catch (err) {
+        button.textContent = 'Failed';
+        setTimeout(() => {
+          button.textContent = originalText;
+        }, 2000);
+      }
+      
+      document.body.removeChild(textarea);
+    }
+  </script>
+</body>
+</html>
