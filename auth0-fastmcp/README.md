@@ -63,7 +63,26 @@ auth0 api post resource-servers --data '{
 }'
 ```
 
-4. Ensure Resource Parameter Compatibility Profile
+4. Configure RBAC Roles & Permissions
+
+You read further about specifying granular roles and scope access for users in the mention [here](https://github.com/auth0-samples/auth0-ai-samples/blob/main/auth-for-mcp/fastmcp-mcp-js/README.md#step-5-configure-rbac-roles-and-permissions), but you minimally add an Admin role for testing with the following:
+
+```
+auth0 roles create --name "Tool Administrator" --description "Grants access to all MCP tools"
+```
+Note the role ID returned and use it to assign permissions to a role: 
+```
+auth0 roles permissions add YOUR_ADMIN_ROLE_ID --api-id "http://localhost:3001/" --permissions "tool:whoami,tool:greet"
+```
+Now assign the admin role to your user:
+```
+# Find a user's ID
+auth0 users search --query "email:\"example@google.com\""
+
+auth0 users roles assign "auth0|USER_ID_HERE" --roles "YOUR_ROLE_ID_HERE"
+```
+
+5. Ensure Resource Parameter Compatibility Profile
 
 Ensure you can use `resource` parameters when requesting access tokens for a resource server. This is an **Early** access feature.
 

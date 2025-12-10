@@ -118,6 +118,12 @@ auth0 api post resource-servers --data '{
 AUTH0_AUDIENCE="https://mcp-server-xxx-uc.a.run.app/"
 ```
 
+If you've already followed the steps in the [READ.md](./README.md) for creating roles and assigning them to users, you can also now ensure that you have assigned your `Tool Administrator` role to this new API:
+```
+auth0 roles permissions add YOUR_ADMIN_ROLE_ID --api-id "https://mcp-server-xxx-uc.a.run.app/" --permissions "tool:whoami,tool:greet"
+```
+This should ensure your access, however if you need to add additional roles or permissions now, please see the full instructions [here](https://github.com/auth0-samples/auth0-ai-samples/blob/main/auth-for-mcp/fastmcp-mcp-js/README.md#step-5-configure-rbac-roles-and-permissions).
+
 ### Step 3: Redeploy with Updated URL (Optional)
 
 If you want the server to know its own URL for OAuth metadata:
@@ -131,6 +137,10 @@ If you want the server to know its own URL for OAuth metadata:
 ### Using MCP Inspector
 
 ```bash
+# optionally bypass SSL cert warnings when running the MCP Inspector locally and targeting your remote MCP server
+export NODE_TLS_REJECT_UNAUTHORIZED=0
+
+# start MCP Inspector
 npx @modelcontextprotocol/inspector
 ```
 
