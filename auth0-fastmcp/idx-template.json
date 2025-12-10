@@ -1,0 +1,11 @@
+{
+  "name": "Auth0 FastMCP Server",
+  "description": "A FastMCP MCP server with Auth0 authentication integration. Build secure MCP tools with OAuth 2.0 authentication using the auth0-api-python library.",
+  "categories": [
+    "Backend",
+    "AI"
+  ],
+  "icon": "",
+  "website": "https://github.com/priley86/auth0-firebase-fastmcp",
+  "publisher": "Patrick Riley"
+}

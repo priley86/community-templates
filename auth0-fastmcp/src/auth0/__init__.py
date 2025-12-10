@@ -12,6 +12,7 @@ from collections.abc import Callable
 
 from mcp.server.auth.routes import create_protected_resource_routes
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 from starlette.middleware import Middleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
@@ -48,6 +49,9 @@ class Auth0Mcp:
         self.mcp = FastMCP(
             name=self.name,
             stateless_http=True,
+            transport_security=TransportSecuritySettings(
+                enable_dns_rebinding_protection=False  # Allow any host (needed for Cloud Run)
+            )
         )
         self._scopes_supported = {
             "openid",

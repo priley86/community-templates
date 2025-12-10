@@ -14,10 +14,9 @@ auth0-api-python = "^1.0.0b6"
 starlette = "^0.48.0"
 uvicorn = "^0.36.0"
 
+[tool.poetry.group.dev.dependencies]
+ruff = ">=0.13.1,<0.14.0"
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
-[dependency-groups]
-dev = [
-    "ruff (>=0.13.1,<0.14.0)"
-]
